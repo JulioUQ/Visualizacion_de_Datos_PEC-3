@@ -1,0 +1,519 @@
+---
+title: "PEC 3 - Visualización de datos"
+subtitle: "StoryTelling"
+author: "Julio Úbeda Quesada"
+date: "`r format(Sys.time(), '%d/%m/%Y, %H:%M')`"
+output:
+  html_document:
+    df_print: paged
+    theme: united
+    toc: true
+    toc_float: true
+    code_folding: hide
+  pdf_document:
+    toc: true
+abstract: |
+  Este informe presenta un análisis exhaustivo del dataset de reservas hoteleras de dos hoteles en Portugal (City Hotel y Resort Hotel), abarcando el período 2015-2017 con 119,390 observaciones. El estudio aplica técnicas de analítica visual para explorar patrones de cancelación, comportamiento de reservas, estacionalidad y características de los huéspedes. Se identifican factores clave que influyen en las cancelaciones, diferencias significativas entre tipos de hotel, y tendencias temporales en la demanda. El análisis integra visualizaciones interactivas que permiten descubrir insights relevantes para la gestión hotelera, como la relación entre lead time y cancelaciones, el impacto del tipo de depósito, y las preferencias según origen geográfico. Los resultados proporcionan una base sólida para la construcción de una narrativa de datos orientada a la toma de decisiones estratégicas en el sector hotelero.
+---
+
+<!-- INITIALIZATION -->
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  eval = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  error = FALSE,
+  fig.width = 10,
+  fig.height = 6
+)
+```
+
+<!-- LIBRERIAS -->
+```{r load_libraries_data, include=FALSE, results='hide'}
+rm(list=ls())
+
+#--------------ESPACIO DE TRABAJO Y RUTAS RELATIVAS---------------#
+home_path  = "~/GitHub/Visualizacion_de_Datos_PEC-3"
+data_loc   = paste0(home_path,"/1. Datos/")
+file_path_csv = paste0(data_loc, "hotel_bookings.csv")
+
+#--------------PAQUETES NECESARIOS---------------#
+Packages = c("ggmosaic", "ggplot2", "fitdistrplus", "MASS", "survival", 
+             "ggstatsplot", "tidyverse", "plotly", "DT", "knitr", 
+             "kableExtra", "scales", "lubridate", "gridExtra", "viridis")
+
+new_packages <- Packages[!(Packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
+lapply(Packages, library, character.only = TRUE)
+
+#--------------CARGAR DATOS---------------#
+df_csv = read.csv(file_path_csv, stringsAsFactors = T)
+```
+
+---
+
+# 1. Introducción y Contexto
+
+## 1.1 Descripción del Dataset
+
+El dataset **hotel_bookings.csv** contiene información detallada sobre reservas realizadas en dos hoteles portugueses: un City Hotel ubicado en Lisboa y un Resort Hotel en el Algarve. Los datos abarcan el período de 2015 a 2017 y proporcionan una visión comprehensiva del comportamiento de las reservas hoteleras.
+
+```{r dataset_overview}
+# Dimensiones del dataset
+cat("Dimensiones del dataset:\n")
+cat("- Observaciones:", nrow(df_csv), "\n")
+cat("- Variables:", ncol(df_csv), "\n\n")
+
+# Primeras filas
+kable(head(df_csv, 5), caption = "Primeras 5 observaciones del dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                font_size = 10) %>%
+  scroll_box(width = "100%")
+```
+
+## 1.2 Variables del Dataset
+
+El dataset contiene **32 variables** que describen diferentes aspectos de cada reserva:
+
+```{r variables_description}
+# Crear tabla descriptiva de variables
+var_desc <- data.frame(
+  Variable = names(df_csv),
+  Tipo = sapply(df_csv, class),
+  Valores_Unicos = sapply(df_csv, function(x) length(unique(x))),
+  Valores_NA = sapply(df_csv, function(x) sum(is.na(x)))
+)
+
+datatable(var_desc, 
+          options = list(pageLength = 10, scrollX = TRUE),
+          caption = "Descripción de variables del dataset")
+```
+
+---
+
+# 2. Limpieza y Preparación de Datos
+
+## 2.1 Detección de Valores Faltantes
+
+```{r missing_values}
+# Calcular porcentaje de valores faltantes
+missing_data <- data.frame(
+  Variable = names(df_csv),
+  NA_Count = sapply(df_csv, function(x) sum(is.na(x))),
+  NA_Percentage = round(sapply(df_csv, function(x) sum(is.na(x))/length(x)*100), 2)
+) %>%
+  filter(NA_Count > 0) %>%
+  arrange(desc(NA_Count))
+
+if(nrow(missing_data) > 0) {
+  kable(missing_data, caption = "Variables con valores faltantes") %>%
+    kable_styling(bootstrap_options = c("striped", "hover"))
+  
+  # Visualización interactiva
+  p <- ggplot(missing_data, aes(x = reorder(Variable, NA_Percentage), 
+                                 y = NA_Percentage)) +
+    geom_bar(stat = "identity", fill = "#FF6B6B") +
+    coord_flip() +
+    labs(title = "Porcentaje de Valores Faltantes por Variable",
+         x = "Variable", y = "Porcentaje (%)") +
+    theme_minimal()
+  
+  ggplotly(p)
+} else {
+  cat("No se detectaron valores faltantes en el dataset.\n")
+}
+```
+
+## 2.2 Detección de Valores Atípicos
+
+```{r outliers_detection}
+# Variables numéricas para análisis de outliers
+numeric_vars <- df_csv %>% 
+  select_if(is.numeric) %>%
+  select(lead_time, stays_in_weekend_nights, stays_in_week_nights, 
+         adults, children, babies, adr)
+
+# Función para detectar outliers
+detect_outliers <- function(x) {
+  Q1 <- quantile(x, 0.25, na.rm = TRUE)
+  Q3 <- quantile(x, 0.75, na.rm = TRUE)
+  IQR <- Q3 - Q1
+  lower <- Q1 - 1.5 * IQR
+  upper <- Q3 + 1.5 * IQR
+  sum(x < lower | x > upper, na.rm = TRUE)
+}
+
+outliers_summary <- data.frame(
+  Variable = names(numeric_vars),
+  Outliers = sapply(numeric_vars, detect_outliers),
+  Porcentaje = round(sapply(numeric_vars, detect_outliers) / nrow(df_csv) * 100, 2)
+)
+
+kable(outliers_summary, caption = "Resumen de valores atípicos") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+# Boxplots interactivos
+plot_ly(data = df_csv, y = ~adr, type = "box", name = "ADR") %>%
+  layout(title = "Distribución de ADR (Average Daily Rate) - Detección de Outliers",
+         yaxis = list(title = "ADR (€)"))
+```
+
+## 2.3 Creación de Variables Derivadas
+
+```{r create_derived_variables}
+# Crear variables adicionales para el análisis
+df_csv <- df_csv %>%
+  mutate(
+    # Total de noches
+    total_nights = stays_in_weekend_nights + stays_in_week_nights,
+    
+    # Total de huéspedes
+    total_guests = adults + children + babies,
+    
+    # Fecha de llegada (convertir mes a número primero)
+    month_num = match(as.character(arrival_date_month), month.name),
+    arrival_date = as.Date(paste(arrival_date_year, 
+                                  month_num, 
+                                  arrival_date_day_of_month, sep = "-"),
+                           format = "%Y-%m-%d"),
+    
+    # Temporada
+    season = case_when(
+      arrival_date_month %in% c("December", "January", "February") ~ "Invierno",
+      arrival_date_month %in% c("March", "April", "May") ~ "Primavera",
+      arrival_date_month %in% c("June", "July", "August") ~ "Verano",
+      TRUE ~ "Otoño"
+    ),
+    
+    # Categoría de lead time
+    lead_time_category = case_when(
+      lead_time == 0 ~ "Mismo día",
+      lead_time <= 7 ~ "1 semana",
+      lead_time <= 30 ~ "1 mes",
+      lead_time <= 90 ~ "3 meses",
+      lead_time <= 180 ~ "6 meses",
+      TRUE ~ "Más de 6 meses"
+    ),
+    
+    # Cambio de habitación (convertir a character para comparar)
+    room_changed = ifelse(as.character(reserved_room_type) != as.character(assigned_room_type), 1, 0),
+    
+    # Ingresos totales
+    total_revenue = adr * total_nights
+  ) %>%
+  select(-month_num)  # Eliminar variable temporal
+
+cat("Variables derivadas creadas exitosamente.\n")
+cat("Nuevas dimensiones:", dim(df_csv), "\n")
+```
+
+---
+
+# 3. Análisis Exploratorio de Datos (EDA)
+
+## 3.1 Análisis de Cancelaciones
+
+```{r cancellation_analysis}
+# Resumen de cancelaciones
+cancel_summary <- df_csv %>%
+  group_by(hotel, is_canceled) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(hotel) %>%
+  mutate(percentage = round(count / sum(count) * 100, 2))
+
+# Visualización interactiva
+p1 <- ggplot(cancel_summary, aes(x = hotel, y = count, 
+                                  fill = factor(is_canceled))) +
+  geom_bar(stat = "identity", position = "fill") +
+  scale_y_continuous(labels = scales::percent) +
+  scale_fill_manual(values = c("#4ECDC4", "#FF6B6B"),
+                    labels = c("No cancelada", "Cancelada")) +
+  labs(title = "Tasa de Cancelación por Tipo de Hotel",
+       x = "Tipo de Hotel", y = "Porcentaje", fill = "Estado") +
+  theme_minimal()
+
+ggplotly(p1)
+
+# Tabla resumen
+kable(cancel_summary %>% 
+        pivot_wider(names_from = is_canceled, values_from = c(count, percentage)),
+      caption = "Resumen de cancelaciones por hotel") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+### 3.1.1 Factores que Influyen en las Cancelaciones
+
+```{r cancellation_factors}
+# Lead time vs cancelación
+p2 <- df_csv %>%
+  group_by(lead_time_category, is_canceled) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(lead_time_category) %>%
+  mutate(percentage = count / sum(count) * 100) %>%
+  filter(is_canceled == 1) %>%
+  ggplot(aes(x = reorder(lead_time_category, percentage), 
+             y = percentage, fill = percentage)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "#FFE66D", high = "#FF6B6B") +
+  coord_flip() +
+  labs(title = "Tasa de Cancelación según Lead Time",
+       x = "Categoría de Lead Time", y = "% Cancelaciones") +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+ggplotly(p2)
+
+# Deposit type vs cancelación
+p3 <- df_csv %>%
+  group_by(deposit_type, is_canceled) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  ggplot(aes(x = deposit_type, y = count, fill = factor(is_canceled))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = c("#4ECDC4", "#FF6B6B"),
+                    labels = c("No cancelada", "Cancelada")) +
+  labs(title = "Cancelaciones según Tipo de Depósito",
+       x = "Tipo de Depósito", y = "Número de Reservas", fill = "Estado") +
+  theme_minimal()
+
+ggplotly(p3)
+```
+
+## 3.2 Análisis Temporal
+
+```{r temporal_analysis}
+# Reservas por mes y año
+monthly_bookings <- df_csv %>%
+  filter(!is.na(arrival_date)) %>%
+  mutate(year_month = format(arrival_date, "%Y-%m")) %>%
+  group_by(year_month, hotel) %>%
+  summarise(count = n(), .groups = "drop")
+
+p4 <- ggplot(monthly_bookings, aes(x = year_month, y = count, 
+                                    color = hotel, group = hotel)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_color_manual(values = c("#FF6B6B", "#4ECDC4")) +
+  labs(title = "Evolución Temporal de Reservas por Hotel",
+       x = "Mes-Año", y = "Número de Reservas", color = "Hotel") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(p4)
+
+# Estacionalidad
+seasonal_data <- df_csv %>%
+  group_by(season, hotel) %>%
+  summarise(
+    total_bookings = n(),
+    avg_adr = mean(adr, na.rm = TRUE),
+    cancellation_rate = mean(is_canceled) * 100,
+    .groups = "drop"
+  )
+
+p5 <- plot_ly(seasonal_data, x = ~season, y = ~total_bookings, 
+              color = ~hotel, type = "bar") %>%
+  layout(title = "Reservas por Temporada y Hotel",
+         xaxis = list(title = "Temporada"),
+         yaxis = list(title = "Número de Reservas"),
+         barmode = "group")
+
+p5
+```
+
+## 3.3 Análisis de Ingresos (ADR)
+
+```{r revenue_analysis}
+# Distribución de ADR
+p6 <- plot_ly(df_csv %>% filter(adr > 0 & adr < 500), 
+              x = ~adr, color = ~hotel, type = "histogram",
+              colors = c("#FF6B6B", "#4ECDC4")) %>%
+  layout(title = "Distribución de ADR por Hotel",
+         xaxis = list(title = "ADR (€)"),
+         yaxis = list(title = "Frecuencia"),
+         barmode = "overlay")
+
+p6
+
+# ADR promedio por mes
+adr_monthly <- df_csv %>%
+  filter(adr > 0, !is.na(arrival_date)) %>%
+  mutate(month = format(arrival_date, "%B")) %>%
+  group_by(month, hotel) %>%
+  summarise(avg_adr = mean(adr, na.rm = TRUE), .groups = "drop")
+
+# Ordenar meses
+month_order <- c("January", "February", "March", "April", "May", "June",
+                 "July", "August", "September", "October", "November", "December")
+adr_monthly$month <- factor(adr_monthly$month, levels = month_order)
+
+p7 <- ggplot(adr_monthly, aes(x = month, y = avg_adr, 
+                               fill = hotel, group = hotel)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = c("#FF6B6B", "#4ECDC4")) +
+  labs(title = "ADR Promedio por Mes",
+       x = "Mes", y = "ADR Promedio (€)", fill = "Hotel") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggplotly(p7)
+```
+
+## 3.4 Análisis Geográfico
+
+```{r geographic_analysis}
+# Top 15 países
+top_countries <- df_csv %>%
+  filter(country != "NULL") %>%
+  group_by(country) %>%
+  summarise(
+    total_bookings = n(),
+    cancellation_rate = mean(is_canceled) * 100,
+    avg_adr = mean(adr, na.rm = TRUE)
+  ) %>%
+  arrange(desc(total_bookings)) %>%
+  head(15)
+
+p8 <- plot_ly(top_countries, x = ~reorder(country, total_bookings), 
+              y = ~total_bookings, type = "bar",
+              marker = list(color = ~cancellation_rate,
+                           colorscale = "Reds",
+                           showscale = TRUE,
+                           colorbar = list(title = "% Cancel."))) %>%
+  layout(title = "Top 15 Países por Número de Reservas",
+         xaxis = list(title = "País"),
+         yaxis = list(title = "Número de Reservas"))
+
+p8
+
+# Tabla de países
+datatable(top_countries, 
+          options = list(pageLength = 15, scrollX = TRUE),
+          caption = "Top 15 países por reservas") %>%
+  formatRound(columns = c("cancellation_rate", "avg_adr"), digits = 2)
+```
+
+## 3.5 Análisis de Segmentos de Mercado
+
+```{r market_segment_analysis}
+# Distribución de segmentos
+market_data <- df_csv %>%
+  group_by(market_segment, hotel) %>%
+  summarise(
+    count = n(),
+    avg_adr = mean(adr, na.rm = TRUE),
+    cancellation_rate = mean(is_canceled) * 100,
+    .groups = "drop"
+  )
+
+p9 <- plot_ly(market_data, x = ~market_segment, y = ~count, 
+              color = ~hotel, type = "bar") %>%
+  layout(title = "Distribución de Reservas por Segmento de Mercado",
+         xaxis = list(title = "Segmento"),
+         yaxis = list(title = "Número de Reservas"),
+         barmode = "stack")
+
+p9
+
+# Tabla resumen por segmento
+kable(market_data %>% 
+        arrange(desc(count)), 
+      caption = "Resumen por segmento de mercado",
+      digits = 2) %>%
+  kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+---
+
+# 4. Insights Clave y Hallazgos
+
+## 4.1 Principales Descubrimientos
+
+```{r key_insights}
+# Calcular métricas clave
+insights <- list(
+  total_bookings = nrow(df_csv),
+  cancellation_rate = mean(df_csv$is_canceled) * 100,
+  avg_lead_time = mean(df_csv$lead_time),
+  avg_adr = mean(df_csv$adr, na.rm = TRUE),
+  most_common_country = names(sort(table(df_csv$country), decreasing = TRUE))[1],
+  peak_month = names(sort(table(df_csv$arrival_date_month), decreasing = TRUE))[1]
+)
+
+# Crear tabla de insights
+insights_df <- data.frame(
+  Métrica = c("Total de Reservas", "Tasa de Cancelación (%)", 
+              "Lead Time Promedio (días)", "ADR Promedio (€)",
+              "País Más Común", "Mes Pico"),
+  Valor = c(
+    format(insights$total_bookings, big.mark = ","),
+    round(insights$cancellation_rate, 2),
+    round(insights$avg_lead_time, 0),
+    round(insights$avg_adr, 2),
+    insights$most_common_country,
+    insights$peak_month
+  )
+)
+
+kable(insights_df, caption = "Métricas Clave del Dataset") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), 
+                full_width = FALSE)
+```
+
+## 4.2 Patrones Identificados
+
+**Cancelaciones:**
+
+- Las reservas con lead time superior a 6 meses presentan las tasas de cancelación más altas
+- Los depósitos no reembolsables tienen tasas de cancelación significativamente menores
+- El City Hotel tiene mayor tasa de cancelación que el Resort Hotel
+
+**Estacionalidad:**
+
+- La demanda presenta picos claros en verano (julio-agosto)
+- El ADR promedio también aumenta durante los meses de verano
+- El Resort Hotel muestra mayor estacionalidad que el City Hotel
+
+**Ingresos:**
+
+- Existe gran variabilidad en el ADR, con outliers significativos
+- Los meses de verano y temporadas altas presentan ADR más elevados
+- El segmento "Online TA" genera el mayor volumen de reservas
+
+---
+
+# 5. Conclusiones y Recomendaciones
+
+## 5.1 Conclusiones
+
+El análisis del dataset de reservas hoteleras revela patrones complejos en el comportamiento de los clientes y oportunidades claras para optimizar la gestión hotelera:
+
+1. **Gestión de Cancelaciones**: Las cancelaciones representan un desafío significativo, especialmente para reservas con lead times prolongados. La implementación de políticas de depósito podría mitigar este riesgo.
+
+2. **Optimización de Precios**: La estacionalidad marcada sugiere oportunidades para implementar estrategias de revenue management más sofisticadas.
+
+3. **Segmentación de Mercado**: La diversidad de segmentos y orígenes geográficos requiere estrategias de marketing diferenciadas.
+
+## 5.2 Recomendaciones
+
+- Implementar modelos predictivos para identificar reservas con alto riesgo de cancelación
+- Desarrollar políticas de pricing dinámico basadas en patrones estacionales
+- Focalizar esfuerzos de marketing en países con alta tasa de conversión
+- Optimizar la gestión de inventario durante temporadas pico
+
+---
+
+# 6. Referencias y Recursos
+
+- Dataset original: Hotel Booking Demand Datasets (Antonio, Almeida & Nunes, 2019)
+- Análisis realizado con R versión `r R.version.string`
+- Paquetes utilizados: tidyverse, plotly, ggplot2, y otros
+
+---
+
+**Nota**: Este documento ha sido generado de forma reproducible. Todas las visualizaciones son interactivas y pueden explorarse en el formato HTML.
+
+```{r session_info}
+cat("Información de la sesión:\n")
+sessionInfo()
+```

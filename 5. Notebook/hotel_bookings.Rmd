@@ -36,7 +36,10 @@ library("tidyverse")
 We read the dataset in CSV format, with 119,390 rows y 32 columns:
 
 ```{r load data}
-x=read.csv("hotel_bookings.csv", stringsAsFactors = T)
+home_path  = "~/GitHub/Visualizacion_de_Datos_PEC-3"
+data_loc   = paste0(home_path,"/1. Datos/")
+file_path_csv = paste0(data_loc, "hotel_bookings.csv")
+x=read.csv(file_path_csv, stringsAsFactors = T)
 dim(x)
 ```
 ## Data cleansing
