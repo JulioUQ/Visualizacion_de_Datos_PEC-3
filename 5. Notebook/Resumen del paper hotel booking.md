@@ -1,7 +1,7 @@
-# Resumen Completo del Dataset de Reservas Hoteleras
+# [Hotel booking demand datasets](C:\Users\jubeda2\Desktop\Visualizacion_de_Datos_PEC-3\2. Enunciado\hotel_bookings_paper.pdf)
 
-## Visión General del Dataset
-
+## Visión General
+ 
 Este documento describe dos datasets con datos reales de demanda hotelera provenientes de dos establecimientos en Portugal:
 
 - **H1 (Resort Hotel)**: Hotel resort en la región de Algarve con 40,060 observaciones
@@ -44,7 +44,7 @@ Para evitar la filtración de información futura en modelos predictivos, se apl
 - **Noches en fin de semana**: sábados y domingos
 - **Noches entre semana**: lunes a viernes
 - **Composición de huéspedes**: adultos, niños, bebés
-- **ADR (Average Daily Rate)**: tarifa promedio diaria calculada dividiendo el total de transacciones de alojamiento entre el número de noches
+- **ADR (*Average Daily Rate*)**: tarifa promedio diaria calculada dividiendo el total de transacciones de alojamiento entre el número de noches
 
 ### Variables de Reserva
 
@@ -116,4 +116,40 @@ No representan datos faltantes sino **"no aplicable"**. Por ejemplo, Agent = NUL
 
 ## Relevancia Científica
 
-Este dataset llena un vacío importante en la investigación de Revenue Management, que tradicionalmente se ha centrado en la industria de aviación (formato PNR). La hospitalidad tiene particularidades específicas que requieren datos propios para investigación efectiva, haciendo estos datasets especialmente valiosos para la comunidad académica y profesional.
+Este *dataset* llena un vacío importante en la investigación de *Revenue Management*, que tradicionalmente se ha centrado en la industria de aviación (formato PNR). La hospitalidad tiene particularidades específicas que requieren datos propios para investigación efectiva, haciendo estos datasets especialmente valiosos para la comunidad académica y profesional.
+
+---
+
+| Variable                    | Type        | Description                                                                                                       | Source / Engineering                                                                                             |
+| --------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| ADR                         | Numeric     | Average Daily Rate as defined by [5]                                                                              | BO, BL and TR / Calculated by dividing the sum of all lodging transactions by the total number of staying nights |
+| Adults                      | Integer     | Number of adults                                                                                                  | BO and BL                                                                                                        |
+| Agent                       | Categorical | ID of the travel agency that made the booking                                                                     | BO and BL                                                                                                        |
+| ArrivalDateDayOfMonth       | Integer     | Day of the month of the arrival date                                                                              | BO and BL                                                                                                        |
+| ArrivalDateMonth            | Categorical | Month of arrival date (January–December)                                                                          | BO and BL                                                                                                        |
+| ArrivalDateWeekNumber       | Integer     | Week number of the arrival date                                                                                   | BO and BL                                                                                                        |
+| ArrivalDateYear             | Integer     | Year of arrival date                                                                                              | BO and BL                                                                                                        |
+| AssignedRoomType            | Categorical | Code of the room type assigned; may differ from reserved room type due to operational reasons or customer request | BO and BL                                                                                                        |
+| Babies                      | Integer     | Number of babies                                                                                                  | BO and BL                                                                                                        |
+| BookingChanges              | Integer     | Number of changes/amendments made to the booking before check-in or cancellation                                  | BO and BL / Calculated as number of unique iterations changing booking attributes                                |
+| Children                    | Integer     | Number of children (payable and non-payable)                                                                      | BO and BL                                                                                                        |
+| Company                     | Categorical | ID of the company/entity responsible for paying the booking                                                       | BO and BL                                                                                                        |
+| Country                     | Categorical | Country of origin (ISO 3155–3:2013 format)                                                                        | BO, BL and NT                                                                                                    |
+| CustomerType                | Categorical | Type of booking: Contract, Group, Transient, Transient-party                                                      | BO and BL                                                                                                        |
+| DaysInWaitingList           | Integer     | Number of days the booking was on the waiting list before confirmation                                            | BO / Calculated from booking entry date and confirmation date                                                    |
+| DepositType                 | Categorical | Indicates whether a deposit was made (No Deposit, Refundable, Non Refund)                                         | BO and TR / Calculated from payments in transaction table                                                        |
+| DistributionChannel         | Categorical | Booking distribution channel (TA = Travel Agents, TO = Tour Operators)                                            | BO, BL and DC                                                                                                    |
+| IsCanceled                  | Categorical | Indicates whether the booking was canceled (1) or not (0)                                                         | BO                                                                                                               |
+| IsRepeatedGuest             | Categorical | Indicates whether the booking was from a repeated guest (1) or not (0)                                            | BO, BL and C / Derived from customer profile history                                                             |
+| LeadTime                    | Integer     | Number of days between booking entry date and arrival date                                                        | BO and BL                                                                                                        |
+| MarketSegment               | Categorical | Market segment designation (TA = Travel Agents, TO = Tour Operators)                                              | BO, BL and MS                                                                                                    |
+| Meal                        | Categorical | Meal type booked (SC/Undefined, BB, HB, FB)                                                                       | BO, BL and ML                                                                                                    |
+| PreviousBookingsNotCanceled | Integer     | Number of previous bookings not canceled by the customer                                                          | BO and BL                                                                                                        |
+| PreviousCancellations       | Integer     | Number of previous bookings canceled by the customer                                                              | BO and BL                                                                                                        |
+| RequiredCarParkingSpaces    | Integer     | Number of car parking spaces required by the customer                                                             | BO and BL                                                                                                        |
+| ReservationStatus           | Categorical | Last reservation status (Canceled, Check-Out, No-Show)                                                            | BO                                                                                                               |
+| ReservationStatusDate       | Date        | Date when the last reservation status was set                                                                     | BO                                                                                                               |
+| ReservedRoomType            | Categorical | Code of the room type reserved                                                                                    | BO and BL                                                                                                        |
+| StaysInWeekendNights        | Integer     | Number of weekend nights (Saturday or Sunday) stayed or booked                                                    | BO and BL                                                                                                        |
+| StaysInWeekNights           | Integer     | Number of week nights (Monday to Friday) stayed or booked                                                         | BO and BL                                                                                                        |
+| TotalOfSpecialRequests      | Integer     | Number of special requests made by the customer                                                                   | BO and BL                                                                                                        |

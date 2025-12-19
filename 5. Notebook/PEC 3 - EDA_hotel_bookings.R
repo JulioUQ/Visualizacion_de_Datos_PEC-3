@@ -17,7 +17,7 @@ rm(list = ls())
 cat("\014")  # Limpiar consola
 
 # Establecer directorio de trabajo
-home_path <- "~/GitHub/Visualizacion_de_Datos_PEC-3"
+home_path <- "C:/Users/jubeda2/Desktop/Visualizacion_de_Datos_PEC-3"
 data_loc <- paste0(home_path, "/1. Datos/")
 file_path_csv <- paste0(data_loc, "hotel_bookings.csv")
 
@@ -34,7 +34,7 @@ packages <- c(
   "RColorBrewer",   # Paletas de colores
   "moments",        # Medidas de forma (asimetría, curtosis)
   "car",            # Pruebas estadísticas
-  "ggmosaic",       # Gráficos de mosaico
+  #"ggmosaic",       # Gráficos de mosaico
   "vcd"             # Visualización de datos categóricos
 )
 
@@ -44,6 +44,9 @@ if(length(nuevos_paquetes)) install.packages(nuevos_paquetes)
 
 # Cargar paquetes
 lapply(packages, library, character.only = TRUE)
+
+remotes::install_github("haleyjeppson/ggmosaic")
+library(ggmosaic)
 
 # Configurar opciones
 options(scipen = 999)  # Evitar notación científica
