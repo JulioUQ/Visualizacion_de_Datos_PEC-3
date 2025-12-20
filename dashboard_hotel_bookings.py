@@ -395,8 +395,36 @@ with tab3:
     </div>
     """, unsafe_allow_html=True)
     
-    # Evolución temporal de cancelaciones
-    st.markdown("### 📅 Evolución Mensual de Reservas")
+    # Evolución temporal de reservas por hotel
+    st.markdown("### 📅 Evolución Temporal de Reservas por Hotel")
+    
+    if 'dia' in data_filtered.columns:
+        # Renombrar columna para compatibilidad
+        df_time = data_filtered.copy()
+        df_time['arrival_date'] = df_time['dia']
+        
+        monthly = (
+            df_time.dropna(subset=["arrival_date"])
+            .groupby([pd.Grouper(key="arrival_date", freq="M"), "hotel"])
+            .size()
+            .reset_index(name="reservas")
+        )
+        
+        fig_time_hotel = px.line(
+            monthly,
+            x="arrival_date",
+            y="reservas",
+            color="hotel",
+            title="Evolución Temporal de Reservas por Tipo de Hotel",
+            labels={'arrival_date': 'Fecha de Llegada', 'reservas': 'Número de Reservas', 'hotel': 'Tipo de Hotel'},
+            color_discrete_sequence=['#1f77b4', '#ff7f0e'],
+            markers=True
+        )
+        fig_time_hotel.update_layout(height=450, hovermode='x unified')
+        st.plotly_chart(fig_time_hotel, use_container_width=True, key="fig_time_hotel_tab3")
+    
+    # Evolución de cancelaciones vs completadas
+    st.markdown("### 📊 Comparativa: Completadas vs Canceladas")
     
     if 'dia' in data_filtered.columns:
         df_time = data_filtered.copy()
