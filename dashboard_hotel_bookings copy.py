@@ -97,44 +97,8 @@ DATA_PATH = BASE_DIR / "1. Datos" / "hotel_bookings_processed.csv"
 @st.cache_data
 def load_data():
     df = pd.read_csv(DATA_PATH)
-    
-    # Crear columna de fecha de llegada
-    if 'arrival_date_year' in df.columns and 'arrival_date_month' in df.columns and 'arrival_date_day_of_month' in df.columns:
-        month_map = {
-            'January': 1, 'February': 2, 'March': 3, 'April': 4,
-            'May': 5, 'June': 6, 'July': 7, 'August': 8,
-            'September': 9, 'October': 10, 'November': 11, 'December': 12
-        }
-        df['month_num'] = df['arrival_date_month'].map(month_map)
-        df['dia'] = pd.to_datetime(df[['arrival_date_year', 'month_num', 'arrival_date_day_of_month']].rename(
-            columns={'arrival_date_year': 'year', 'month_num': 'month', 'arrival_date_day_of_month': 'day'}
-        ))
-    
-    # Total de noches
-    if 'stays_in_weekend_nights' in df.columns and 'stays_in_week_nights' in df.columns:
-        df['total_nights'] = df['stays_in_weekend_nights'] + df['stays_in_week_nights']
-    
-    # Total de huéspedes
-    if 'adults' in df.columns and 'children' in df.columns and 'babies' in df.columns:
-        df['total_guests'] = df['adults'] + df['children'] + df['babies']
-    
-    # Temporada
-    if 'arrival_date_month' in df.columns:
-        df['season'] = df['arrival_date_month'].map({
-            'December': 'Invierno', 'January': 'Invierno', 'February': 'Invierno',
-            'March': 'Primavera', 'April': 'Primavera', 'May': 'Primavera',
-            'June': 'Verano', 'July': 'Verano', 'August': 'Verano',
-            'September': 'Otoño', 'October': 'Otoño', 'November': 'Otoño'
-        })
-    
-    # Categoría de lead time
-    if 'lead_time' in df.columns:
-        df['lead_time_category'] = pd.cut(
-            df['lead_time'],
-            bins=[-1, 0, 7, 30, 90, 180, df['lead_time'].max()],
-            labels=['Mismo día', '1 semana', '1 mes', '3 meses', '6 meses', 'Más de 6 meses']
-        )
-    
+    if 'dia' in df.columns:
+        df['dia'] = pd.to_datetime(df['dia'])
     return df
 
 data = load_data()
@@ -417,52 +381,6 @@ with tab2:
         El perfil típico: cliente individual (Transient) sin historial previo.
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("### 👥 Composición de Huéspedes y Duración de Estancias")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        if 'total_guests' in data_filtered.columns:
-            # Distribución de huéspedes
-            guests_dist = data_filtered['total_guests'].value_counts().sort_index().reset_index()
-            guests_dist.columns = ['num_guests', 'count']
-            guests_dist = guests_dist[guests_dist['num_guests'] <= 8]  # Limitar para mejor visualización
-            
-            fig_guests = px.bar(
-                guests_dist,
-                x='num_guests',
-                y='count',
-                title='Distribución por Número de Huéspedes',
-                labels={'num_guests': 'Número de Huéspedes', 'count': 'Número de Reservas'},
-                color='count',
-                color_continuous_scale='Teal',
-                text='count'
-            )
-            fig_guests.update_traces(texttemplate='%{text:,}', textposition='outside')
-            fig_guests.update_layout(height=400, showlegend=False)
-            st.plotly_chart(fig_guests, use_container_width=True, key="fig_guests_tab2")
-    
-    with col2:
-        if 'total_nights' in data_filtered.columns:
-            # Distribución de noches
-            nights_dist = data_filtered[data_filtered['total_nights'] <= 14].copy()  # Limitar outliers
-            nights_counts = nights_dist['total_nights'].value_counts().sort_index().reset_index()
-            nights_counts.columns = ['num_nights', 'count']
-            
-            fig_nights = px.bar(
-                nights_counts,
-                x='num_nights',
-                y='count',
-                title='Distribución por Duración de Estancia (Noches)',
-                labels={'num_nights': 'Número de Noches', 'count': 'Número de Reservas'},
-                color='count',
-                color_continuous_scale='Magma',
-                text='count'
-            )
-            fig_nights.update_traces(texttemplate='%{text:,}', textposition='outside')
-            fig_nights.update_layout(height=400, showlegend=False)
-            st.plotly_chart(fig_nights, use_container_width=True, key="fig_nights_tab2")
 
 # ============================================
 # TAB 3: EL FACTOR TIEMPO
@@ -481,49 +399,51 @@ with tab3:
     st.markdown("### 📅 Evolución Temporal de Reservas por Hotel")
     
     if 'dia' in data_filtered.columns:
-        df_time = data_filtered.dropna(subset=['dia']).copy()
-        df_time['year_month'] = df_time['dia'].dt.to_period('M').astype(str)
+        # Renombrar columna para compatibilidad
+        df_time = data_filtered.copy()
+        df_time['arrival_date'] = df_time['dia']
         
-        monthly = df_time.groupby(['year_month', 'hotel']).size().reset_index(name='reservas')
+        monthly = (
+            df_time.dropna(subset=["arrival_date"])
+            .groupby([pd.Grouper(key="arrival_date", freq="M"), "hotel"])
+            .size()
+            .reset_index(name="reservas")
+        )
         
         fig_time_hotel = px.line(
             monthly,
-            x='year_month',
-            y='reservas',
-            color='hotel',
-            title='Evolución Temporal de Reservas por Tipo de Hotel',
-            labels={'year_month': 'Mes', 'reservas': 'Número de Reservas', 'hotel': 'Tipo de Hotel'},
+            x="arrival_date",
+            y="reservas",
+            color="hotel",
+            title="Evolución Temporal de Reservas por Tipo de Hotel",
+            labels={'arrival_date': 'Fecha de Llegada', 'reservas': 'Número de Reservas', 'hotel': 'Tipo de Hotel'},
             color_discrete_sequence=['#1f77b4', '#ff7f0e'],
             markers=True
         )
         fig_time_hotel.update_layout(height=450, hovermode='x unified')
-        fig_time_hotel.update_xaxes(tickangle=45)
         st.plotly_chart(fig_time_hotel, use_container_width=True, key="fig_time_hotel_tab3")
     
-    # Evolución de cancelaciones por temporada
-    st.markdown("### 📊 Comparativa por Temporada: Completadas vs Canceladas")
+    # Evolución de cancelaciones vs completadas
+    st.markdown("### 📊 Comparativa: Completadas vs Canceladas")
     
-    if 'season' in data_filtered.columns:
-        season_order = ['Primavera', 'Verano', 'Otoño', 'Invierno']
-        season_cancellations = data_filtered.groupby(['season', 'is_canceled']).size().reset_index(name='count')
-        season_cancellations['status'] = season_cancellations['is_canceled'].map({0: 'Completadas', 1: 'Canceladas'})
+    if 'dia' in data_filtered.columns:
+        df_time = data_filtered.copy()
+        df_time['year_month'] = df_time['dia'].dt.to_period('M').astype(str)
         
-        # Ordenar por temporada
-        season_cancellations['season'] = pd.Categorical(season_cancellations['season'], categories=season_order, ordered=True)
-        season_cancellations = season_cancellations.sort_values('season')
+        monthly_cancellations = df_time.groupby(['year_month', 'is_canceled']).size().reset_index(name='count')
+        monthly_cancellations['status'] = monthly_cancellations['is_canceled'].map({0: 'Completadas', 1: 'Canceladas'})
         
-        fig_season = px.bar(
-            season_cancellations,
-            x='season',
+        fig_time = px.line(
+            monthly_cancellations,
+            x='year_month',
             y='count',
             color='status',
-            barmode='group',
-            title='Reservas Completadas vs Canceladas por Temporada',
-            labels={'season': 'Temporada', 'count': 'Número de Reservas', 'status': 'Estado'},
-            color_discrete_map={'Completadas': '#2ca02c', 'Canceladas': '#d62728'}
+            labels={'year_month': 'Mes', 'count': 'Número de Reservas', 'status': 'Estado'},
+            color_discrete_map={'Completadas': '#2ca02c', 'Canceladas': '#d62728'},
+            markers=True
         )
-        fig_season.update_layout(height=450)
-        st.plotly_chart(fig_season, use_container_width=True, key="fig_season_tab3")
+        fig_time.update_layout(height=450, hovermode='x unified')
+        st.plotly_chart(fig_time, use_container_width=True, key="fig_time_tab3")
     
     st.markdown("""
     <div class="insight-box">
@@ -538,31 +458,30 @@ with tab3:
     col1, col2 = st.columns([2, 1])
     
     with col1:
-        if 'lead_time_category' in data_filtered.columns:
-            # Ordenar categorías
-            category_order = ['Mismo día', '1 semana', '1 mes', '3 meses', '6 meses', 'Más de 6 meses']
-            
-            lead_cancel = data_filtered.groupby('lead_time_category')['is_canceled'].agg(['sum', 'count']).reset_index()
-            lead_cancel['cancel_rate'] = (lead_cancel['sum'] / lead_cancel['count'] * 100).round(2)
-            
-            # Ordenar
-            lead_cancel['lead_time_category'] = pd.Categorical(lead_cancel['lead_time_category'], categories=category_order, ordered=True)
-            lead_cancel = lead_cancel.sort_values('lead_time_category')
-            
-            fig_lead = px.bar(
-                lead_cancel,
-                x='lead_time_category',
-                y='cancel_rate',
-                title='Tasa de Cancelación según Anticipación de la Reserva',
-                labels={'lead_time_category': 'Anticipación (Lead Time)', 'cancel_rate': 'Tasa de Cancelación (%)'},
-                color='cancel_rate',
-                color_continuous_scale='Reds',
-                text='cancel_rate'
-            )
-            fig_lead.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
-            fig_lead.update_layout(height=450, showlegend=False)
-            fig_lead.update_xaxes(tickangle=45)
-            st.plotly_chart(fig_lead, use_container_width=True, key="fig_lead_tab3")
+        # Crear bins de lead time
+        data_lead = data_filtered.copy()
+        data_lead['lead_time_bin'] = pd.cut(
+            data_lead['lead_time'],
+            bins=[0, 30, 60, 90, 180, 365, 800],
+            labels=['0-30 días', '31-60 días', '61-90 días', '91-180 días', '181-365 días', '>365 días']
+        )
+        
+        lead_cancel = data_lead.groupby('lead_time_bin')['is_canceled'].agg(['sum', 'count']).reset_index()
+        lead_cancel['cancel_rate'] = (lead_cancel['sum'] / lead_cancel['count'] * 100).round(2)
+        
+        fig_lead = px.bar(
+            lead_cancel,
+            x='lead_time_bin',
+            y='cancel_rate',
+            title='Tasa de Cancelación según Anticipación de la Reserva',
+            labels={'lead_time_bin': 'Anticipación (Lead Time)', 'cancel_rate': 'Tasa de Cancelación (%)'},
+            color='cancel_rate',
+            color_continuous_scale='Reds',
+            text='cancel_rate'
+        )
+        fig_lead.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+        fig_lead.update_layout(height=450, showlegend=False)
+        st.plotly_chart(fig_lead, use_container_width=True, key="fig_lead_tab3")
     
     with col2:
         st.markdown("<br><br>", unsafe_allow_html=True)
@@ -584,89 +503,20 @@ with tab3:
         """)
     
     # Distribución de lead time
-    st.markdown("### 📊 Distribución de Reservas por Categoría de Lead Time")
+    st.markdown("### 📊 Distribución del Lead Time")
     
-    if 'lead_time_category' in data_filtered.columns:
-        category_order = ['Mismo día', '1 semana', '1 mes', '3 meses', '6 meses', 'Más de 6 meses']
-        
-        lead_dist = data_filtered['lead_time_category'].value_counts().reset_index()
-        lead_dist.columns = ['lead_time_category', 'count']
-        
-        # Ordenar
-        lead_dist['lead_time_category'] = pd.Categorical(lead_dist['lead_time_category'], categories=category_order, ordered=True)
-        lead_dist = lead_dist.sort_values('lead_time_category')
-        
-        fig_lead_dist = px.bar(
-            lead_dist,
-            x='lead_time_category',
-            y='count',
-            title='Número de Reservas por Categoría de Anticipación',
-            labels={'lead_time_category': 'Categoría de Lead Time', 'count': 'Número de Reservas'},
-            color='count',
-            color_continuous_scale='Blues',
-            text='count'
-        )
-        fig_lead_dist.update_traces(texttemplate='%{text:,}', textposition='outside')
-        fig_lead_dist.update_layout(height=400, showlegend=False)
-        fig_lead_dist.update_xaxes(tickangle=45)
-        st.plotly_chart(fig_lead_dist, use_container_width=True, key="fig_lead_dist_tab3")
+    data_lead_hist = data_filtered[data_filtered['lead_time'] < 365].copy()
     
-    # Relación Lead Time y Duración de Estancia
-    st.markdown("### 🔄 Lead Time vs Duración de Estancia")
-    
-    if 'lead_time_category' in data_filtered.columns and 'total_nights' in data_filtered.columns:
-        category_order = ['Mismo día', '1 semana', '1 mes', '3 meses', '6 meses', 'Más de 6 meses']
-        
-        # Filtrar outliers en noches
-        lead_nights = data_filtered[data_filtered['total_nights'] <= 20].copy()
-        
-        lead_nights_avg = lead_nights.groupby('lead_time_category')['total_nights'].agg(['mean', 'median', 'count']).reset_index()
-        lead_nights_avg.columns = ['lead_time_category', 'promedio_noches', 'mediana_noches', 'num_reservas']
-        
-        # Ordenar
-        lead_nights_avg['lead_time_category'] = pd.Categorical(lead_nights_avg['lead_time_category'], categories=category_order, ordered=True)
-        lead_nights_avg = lead_nights_avg.sort_values('lead_time_category')
-        
-        fig_lead_nights = go.Figure()
-        
-        fig_lead_nights.add_trace(go.Bar(
-            name='Promedio de Noches',
-            x=lead_nights_avg['lead_time_category'],
-            y=lead_nights_avg['promedio_noches'],
-            marker_color='#1f77b4',
-            text=lead_nights_avg['promedio_noches'].round(1),
-            texttemplate='%{text:.1f}',
-            textposition='outside'
-        ))
-        
-        fig_lead_nights.add_trace(go.Scatter(
-            name='Mediana de Noches',
-            x=lead_nights_avg['lead_time_category'],
-            y=lead_nights_avg['mediana_noches'],
-            mode='lines+markers',
-            marker=dict(color='#ff7f0e', size=10),
-            line=dict(color='#ff7f0e', width=3)
-        ))
-        
-        fig_lead_nights.update_layout(
-            title='Duración Promedio de Estancia según Anticipación de Reserva',
-            xaxis_title='Categoría de Lead Time',
-            yaxis_title='Número de Noches',
-            height=450,
-            hovermode='x unified',
-            legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1)
-        )
-        fig_lead_nights.update_xaxes(tickangle=45)
-        
-        st.plotly_chart(fig_lead_nights, use_container_width=True, key="fig_lead_nights_tab3")
-        
-        st.markdown("""
-        <div class="insight-box">
-            <strong>💡 Insight Clave:</strong> Las reservas con mayor anticipación (lead time) tienden a tener 
-            estancias ligeramente más largas, lo que sugiere que los clientes que planifican con más antelación 
-            buscan experiencias más prolongadas. Sin embargo, también presentan mayor riesgo de cancelación.
-        </div>
-        """, unsafe_allow_html=True)
+    fig_lead_dist = px.histogram(
+        data_lead_hist,
+        x='lead_time',
+        nbins=50,
+        title='Distribución de Días de Anticipación (Lead Time)',
+        labels={'lead_time': 'Días de Anticipación', 'count': 'Frecuencia'},
+        color_discrete_sequence=['#1f77b4']
+    )
+    fig_lead_dist.update_layout(height=400, showlegend=False)
+    st.plotly_chart(fig_lead_dist, use_container_width=True, key="fig_lead_dist_tab3")
 
 # ============================================
 # TAB 4: CANALES Y COMPORTAMIENTO
@@ -944,7 +794,7 @@ with tab5:
         data_adr['adr_bin'] = pd.cut(
             data_adr['adr'],
             bins=[0, 50, 100, 150, 200, 500],
-            labels=['€0-50', '€51-100', '€101-150', '€151-200', '>€200']
+            labels=['€0-50', '€51-100', '€101-150', '€151-200', '&gt;€200']
         )
         
         adr_cancel = data_adr.groupby('adr_bin')['is_canceled'].agg(['sum', 'count']).reset_index()
