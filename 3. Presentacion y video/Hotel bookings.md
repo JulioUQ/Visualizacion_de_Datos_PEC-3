@@ -7,16 +7,11 @@ Breve explicación del dataset y objetivos del informe.
     
 - Variables clave: `is_canceled`, `lead_time`, `arrival_date_*`, `stays_in_*`, `adults`, `children`, `meal`, `country`, `market_segment`, `distribution_channel`, `reserved_room_type`, `assigned_room_type`, `adr`, `total_of_special_requests`, `reservation_status`, etc.
     
-- Objetivos:
-    
-    1. Limpiar y preparar los datos.
-    2. Responder preguntas de interés mediante visualización.
-    3. Construir gráficos interactivos que sirvan para storytelling (cuentas, comparaciones y patrones).
-    4. Proveer materiales para la presentación: imágenes exportables y tablas interactivas.
 
-# 2 Abstract (completado)
 
-_(Ver el encabezado YAML — resumen ejecutivo corto del análisis y objetivos)._
+# 2 Abstract 
+
+  Este informe presenta un análisis exhaustivo del dataset de reservas hoteleras de dos hoteles en Portugal (City Hotel y Resort Hotel), abarcando el período 2015-2017 con 119,390 observaciones. El estudio aplica técnicas de analítica visual para explorar patrones de cancelación, comportamiento de reservas, estacionalidad y características de los huéspedes. Se identifican factores clave que influyen en las cancelaciones, diferencias significativas entre tipos de hotel, y tendencias temporales en la demanda. El análisis integra visualizaciones interactivas que permiten descubrir insights relevantes para la gestión hotelera, como la relación entre lead time y cancelaciones, el impacto del tipo de depósito, y las preferencias según origen geográfico. Los resultados proporcionan una base sólida para la construcción de una narrativa de datos orientada a la toma de decisiones estratégicas en el sector hotelero.
 
 # 3 Preparación y limpieza de datos
 
@@ -33,13 +28,9 @@ na_tab[na_tab > 0]
 Explicación:
 
 - Detectamos y convertimos fechas `arrival_date`.
-    
 - Creamos `total_nights` como suma de noches de fin de semana y entre semana.
-    
 - Coerciones para asegurar que `adr`, `children`, `adults` sean numéricas.
-    
 - Mostramos valores faltantes para decidir imputación o exclusión.
-    
 
 ### Tratamiento de valores atípicos y NA
 
