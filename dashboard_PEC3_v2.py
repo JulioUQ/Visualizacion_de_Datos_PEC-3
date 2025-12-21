@@ -875,6 +875,7 @@ with tab5:
     <div style="max-width: 1200px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
              padding: 50px 60px; border-radius: 20px; color: white; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            
             <h2 style="color: white; text-align: center; font-size: 42px; margin: 0 0 40px 0;">
                 El Enigma Está Resuelto
             </h2>
@@ -886,18 +887,20 @@ with tab5:
             <p style="font-size: 26px; margin: 20px 0; line-height: 1.6;">
                 ⏰ <strong>Tiempo:</strong> Depósitos escalonados según anticipación
             </p>
+            
             <p style="font-size: 26px; margin: 20px 0; line-height: 1.6;">
                 📱 <strong>OTAs:</strong> Rescata tu canal directo con incentivos
             </p>
+            
             <p style="font-size: 26px; margin: 20px 0; line-height: 1.6;">
                 💰 <strong>Políticas:</strong> Dinero en juego = Compromiso real
             </p>
             
-            <div style="text-align: center; font-size: 32px; margin-top: 50px; 
-                 background: rgba(255,255,255,0.2); padding: 35px; border-radius: 15px;">
+            <div style="text-align: center; font-size: 32px; margin-top: 50px; background: rgba(255,255,255,0.2); padding: 35px; border-radius: 15px;">
                 <p style="margin: 0 0 20px 0;">119.390 reservas nos contaron su historia.</p>
                 <p style="margin: 0; font-weight: bold;">Ahora depende de ti escribir el siguiente capítulo.</p>
             </div>
+            
         </div>
     </div>
     """, unsafe_allow_html=True)
