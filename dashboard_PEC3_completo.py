@@ -227,7 +227,7 @@ with tab1:
     descubres que 4 de cada 10 clientes han cancelado. <strong>¿Frustración? Absolutamente.</strong> 
     Pero, ¿y si pudiéramos entender el porqué?<br><br>
     
-    Esta visualización explora <strong>119,390 reservas hoteleras</strong> realizadas entre 2015 y 2017 
+    He analizado <strong>119,390 reservas hoteleras</strong> realizadas entre 2015 y 2017 
     en dos hoteles portugueses: un <strong>City Hotel en Lisboa</strong> y un <strong>Resort Hotel en el Algarve</strong>. 
     <br><br>
     

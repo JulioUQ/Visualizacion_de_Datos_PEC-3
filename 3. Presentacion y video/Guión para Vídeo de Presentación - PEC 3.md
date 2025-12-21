@@ -42,9 +42,11 @@
 
 **Narración:**
 
-> "Imagina: eres director de un hotel en Lisboa. Es lunes por la mañana. Revisas las reservas de hoy... y 4 de cada 10 clientes han cancelado. No es un mal día. Es **todos los días**.
-> 
-> Esto no es ficción. Analicé 119.390 reservas reales de dos hoteles portugueses durante 3 años completos. Y descubrí algo que cambiará cómo ves las cancelaciones."
+**Imagina que eres director de un hotel en Lisboa.** Cada mañana, al revisar las reservas del día, descubres que 4 de cada 10 clientes han cancelado. **¿Frustración? Absolutamente.** Pero, ¿y si pudiéramos entender el porqué?  
+
+Esta visualización explora **119,390 reservas hoteleras** realizadas entre 2015 y 2017 en dos hoteles portugueses: un **City Hotel en Lisboa** y un **Resort Hotel en el Algarve**.  
+
+**Nuestro objetivo:** Desentrañar los patrones ocultos detrás de ese 37% de cancelaciones que amenaza la rentabilidad del sector hotelero.
 
 **[VISUAL: Zoom a las 4 tarjetas de "¿Qué encontraremos?" con animación de aparición]**
 
@@ -58,7 +60,7 @@
 
 > "La pregunta no es **por qué** cancelan. La pregunta es: ¿**cuándo podemos predecirlo**?
 > 
-> 119.000 reservas. Dos hoteles: uno urbano en Lisboa, otro resort en el Algarve. 79.000 reservas completadas en verde. 44.000 canceladas en rojo.
+> 119.000 reservas. Dos hoteles: uno urbano en Lisboa, otro resort en el Algarve. 73.000 reservas completadas en verde. 44.000 canceladas en rojo.
 > 
 > Y aquí está lo fascinante: este caos tiene **patrones perfectos**. Tres patrones que, si los entiendes, puedes convertir ese 37% en dinero real."
 
