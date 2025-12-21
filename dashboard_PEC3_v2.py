@@ -707,9 +707,6 @@ with tab5:
             <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
             • Upgrades gratis
             </p>
-            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-style: italic;">
-            Meta: del 18% al 35% en un año
-            </p>
         </div>
         """, unsafe_allow_html=True)
     

@@ -82,9 +82,9 @@ Esta visualización explora **119,390 reservas hoteleras** realizadas entre 20
 > 
 > **[Pausa para efecto dramático]**
 > 
-> ¿Ves esta línea? Es brutal. Si un cliente reserva con **menos de 7 días** de anticipación, solo el 18% cancela. Tiene prisa, tiene compromiso.
+> ¿Ves esta línea? Es brutal. Si un cliente reserva con **menos de 7 días** de anticipación, solo el 6.7% cancela. Tiene prisa, tiene compromiso.
 > 
-> Pero si reserva con **más de 6 meses** de anticipación... **56% de cancelaciones**. Más de la mitad. ¿Por qué? Porque el tiempo diluye el compromiso. En 6 meses pasan bodas, cambios de trabajo, pandemias... La vida pasa."
+> Pero si reserva con **más de 6 meses** de anticipación... **57% de cancelaciones**. Más de la mitad. ¿Por qué? Porque el tiempo diluye el compromiso. En 6 meses pasan bodas, cambios de trabajo, pandemias... La vida pasa."
 
 **[VISUAL: Zoom animado en las barras del gráfico de categorías de lead time, destacando contraste entre "1 semana" vs "Más de 6 meses"]**
 
@@ -128,7 +128,15 @@ Esta visualización explora **119,390 reservas hoteleras** realizadas entre 20
 
 > "**Culpable número tres: Tu política flexible te está arruinando.**
 > 
-> Este gráfico es devastador. Mira la diferencia. Reservas con depósito: 15% de cancelaciones. Reservas sin depósito: **43% de cancelaciones**.
+> Este gráfico es devastador. La intuición nos dice que exigir un depósito reduce las cancelaciones… pero los datos cuentan otra historia.
+> 
+> Las reservas **sin depósito** presentan cerca de un **30 % de cancelaciones**.
+> 
+> Sin embargo, cuando el depósito es **no reembolsable**, la tasa de cancelación se dispara hasta **casi el 100 %**. No es un error. La clave es que _no reembolsable_ **no significa no cancelable**.
+> 
+> ¿Qué está pasando? Que el cliente utiliza estas tarifas como reservas especulativas: bloquea habitaciones, compara precios y cancela antes de la fecha de llegada, sin llegar a asumir el coste.
+> 
+> En la práctica, una política supuestamente más estricta **no solo no reduce las cancelaciones, sino que las amplifica**.
 > 
 > [Dejar que el número resuene]
 > 
