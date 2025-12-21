@@ -252,13 +252,21 @@ with tab1:
     with col2:
         st.markdown("""
         <div class="narrative-text">
+        <p style="margin: 10px 0; font-size: 24px;">
         <strong>Imagina:</strong> Eres director de un hotel en Lisboa. Es lunes por la mañana. 
-        Revisas las reservas de hoy... y <strong>4 de cada 10 clientes han cancelado</strong>.<br><br>
-        
-        No es un mal día. Es <strong>TODOS LOS DÍAS</strong>.<br><br>
-        
-        119.390 reservas reales. 3 años completos. Dos hoteles portugueses.<br>
+        Revisas las reservas de hoy... y <strong>4 de cada 10 clientes han cancelado</strong>.
+        </p>
+        <br>
+        <p style="margin: 10px 0; font-size: 24px;">
+        No es un mal día. Es <strong>TODOS LOS DÍAS</strong>.
+        </p>
+        <br>
+        <p style="margin: 10px 0; font-size: 24px;">
+        119.390 reservas reales. 3 años completos. Dos hoteles portugueses.
+        </p>
+        <p style="margin: 10px 0; font-size: 24px;">
         Y descubrí algo que cambiará cómo ves las cancelaciones.
+        </p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -358,13 +366,14 @@ with tab2:
         st.plotly_chart(fig_status, use_container_width=True, key="fig_status_main")
     
     with col2:
-        st.markdown("""
+        st.markdown(f"""
         <div class="narrative-text" style="margin-top: 100px;">
-        <strong style="font-size: 32px; color: #dc3545;">Este caos tiene patrones perfectos.</strong><br><br>
-        
-        <span style="font-size: 26px;">
+        <p style="font-size: 32px; font-weight: bold; color: #dc3545; margin: 0 0 20px 0;">
+        Este caos tiene patrones perfectos.
+        </p>
+        <p style="font-size: 26px; margin: 0;">
         Tres patrones que, si los entiendes, puedes convertir ese 37% en dinero real.
-        </span>
+        </p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -423,14 +432,19 @@ with tab3:
         st.markdown("""
         <div class="culprit-box">
             <div class="culprit-title">18% vs 56%</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="culprit-box" style="margin-top: -20px; padding-top: 20px;">
             <div class="culprit-text">
-            Si un cliente reserva con <strong>menos de 7 días</strong> de anticipación: 
-            solo el <strong>18% cancela</strong>. Tiene prisa, tiene compromiso.<br><br>
+            <p style="margin: 10px 0;">Si un cliente reserva con <strong>menos de 7 días</strong> de anticipación: 
+            solo el <strong>18% cancela</strong>. Tiene prisa, tiene compromiso.</p>
             
-            Pero si reserva con <strong>más de 6 meses</strong>: <strong>56% de cancelaciones</strong>. 
-            Más de la mitad.<br><br>
+            <p style="margin: 10px 0;">Pero si reserva con <strong>más de 6 meses</strong>: <strong>56% de cancelaciones</strong>. 
+            Más de la mitad.</p>
             
-            ¿Por qué? Porque el tiempo diluye el compromiso.
+            <p style="margin: 10px 0;">¿Por qué? Porque el tiempo diluye el compromiso.</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -472,11 +486,11 @@ with tab3:
     
     st.markdown("""
     <div class="narrative-text" style="background: #fff3cd; border-left: 8px solid #ffc107;">
-    <strong style="font-size: 28px;">El insight de oro:</strong><br>
-    <span style="font-size: 24px;">
+    <p style="font-size: 28px; font-weight: bold; margin: 0 0 15px 0;">El insight de oro:</p>
+    <p style="font-size: 24px; margin: 0;">
     La mayoría de reservas se concentran entre <strong>1 y 3 meses</strong>. 
     Esta es tu <strong>zona de batalla</strong>. No son los extremos, es el centro donde se juega el partido.
-    </span>
+    </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -531,10 +545,8 @@ with tab4:
             
             st.markdown("""
             <div class="narrative-text" style="background: #ffe5e5;">
-            <strong style="font-size: 24px;">Cancelar en una OTA es ridículamente fácil.</strong><br><br>
-            <span style="font-size: 20px;">
-            Tres clics. Sin llamar. Sin culpa. Sin conexión humana.
-            </span>
+            <p style="font-size: 24px; font-weight: bold; margin: 0 0 15px 0;">Cancelar en una OTA es ridículamente fácil.</p>
+            <p style="font-size: 20px; margin: 0;">Tres clics. Sin llamar. Sin culpa. Sin conexión humana.</p>
             </div>
             """, unsafe_allow_html=True)
     
@@ -556,11 +568,11 @@ with tab4:
             
             st.markdown("""
             <div class="narrative-text" style="background: #e3f2fd;">
-            <strong style="font-size: 24px;">97% son desconocidos.</strong><br><br>
-            <span style="font-size: 20px;">
+            <p style="font-size: 24px; font-weight: bold; margin: 0 0 15px 0;">97% son desconocidos.</p>
+            <p style="font-size: 20px; margin: 0;">
             Llegaron por una OTA, no tienen lealtad, no te conocen. 
             Son <strong>fantasmas digitales</strong> que pueden desaparecer con un clic.
-            </span>
+            </p>
             </div>
             """, unsafe_allow_html=True)
     
@@ -637,13 +649,18 @@ with tab4:
     st.markdown("""
     <div class="culprit-box">
         <div class="culprit-title">15% vs 43%</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="culprit-box" style="margin-top: -20px; padding-top: 20px;">
         <div class="culprit-text">
-        Reservas <strong>con depósito</strong>: 15% de cancelaciones.<br>
-        Reservas <strong>sin depósito</strong>: 43% de cancelaciones.<br><br>
-        
-        No hace falta un doctorado en psicología:<br>
-        <strong>Dinero en juego = Compromiso</strong><br>
-        Sin dinero en juego = 'Ya veré si voy'
+        <p style="margin: 10px 0;">Reservas <strong>con depósito</strong>: 15% de cancelaciones.</p>
+        <p style="margin: 10px 0;">Reservas <strong>sin depósito</strong>: 43% de cancelaciones.</p>
+        <br>
+        <p style="margin: 10px 0;">No hace falta un doctorado en psicología:</p>
+        <p style="margin: 10px 0;"><strong>Dinero en juego = Compromiso</strong></p>
+        <p style="margin: 10px 0;">Sin dinero en juego = 'Ya veré si voy'</p>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -663,12 +680,17 @@ with tab5:
         st.markdown("""
         <div class="solution-box">
             <div class="solution-title">PASO 1: Depósitos Escalonados</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="solution-box" style="margin-top: -20px; padding-top: 20px;">
             <div class="solution-text">
-            <strong>< 30 días:</strong> 0% depósito<br>
-            <strong>30-90 días:</strong> 10% depósito<br>
-            <strong>> 90 días:</strong> 20% depósito<br><br>
-            
-            <em>Suficiente para pensárselo dos veces.</em>
+            <p style="margin: 8px 0;"><strong>&lt; 30 días:</strong> 0% depósito</p>
+            <p style="margin: 8px 0;"><strong>30-90 días:</strong> 10% depósito</p>
+            <p style="margin: 8px 0;"><strong>&gt; 90 días:</strong> 20% depósito</p>
+            <br>
+            <p style="margin: 8px 0;"><em>Suficiente para pensárselo dos veces.</em></p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -677,12 +699,17 @@ with tab5:
         st.markdown("""
         <div class="solution-box">
             <div class="solution-title">PASO 2: Rescata tu Canal Directo</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="solution-box" style="margin-top: -20px; padding-top: 20px;">
             <div class="solution-text">
-            • 7% descuento directo<br>
-            • Programa de puntos<br>
-            • Upgrades gratis<br><br>
-            
-            <em>Meta: del 18% al 35% en un año</em>
+            <p style="margin: 8px 0;">• 7% descuento directo</p>
+            <p style="margin: 8px 0;">• Programa de puntos</p>
+            <p style="margin: 8px 0;">• Upgrades gratis</p>
+            <br>
+            <p style="margin: 8px 0;"><em>Meta: del 18% al 35% en un año</em></p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -691,12 +718,17 @@ with tab5:
         st.markdown("""
         <div class="solution-box">
             <div class="solution-title">PASO 3: Convierte Desconocidos en Familia</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="solution-box" style="margin-top: -20px; padding-top: 20px;">
             <div class="solution-text">
-            • Email 48h post-reserva<br>
-            • Tips locales 7 días antes<br>
-            • Follow-up post-estancia<br><br>
-            
-            <em>Meta: triplicar el 3% actual</em>
+            <p style="margin: 8px 0;">• Email 48h post-reserva</p>
+            <p style="margin: 8px 0;">• Tips locales 7 días antes</p>
+            <p style="margin: 8px 0;">• Follow-up post-estancia</p>
+            <br>
+            <p style="margin: 8px 0;"><em>Meta: triplicar el 3% actual</em></p>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -846,22 +878,29 @@ with tab5:
         <h2 style="color: white; text-align: center; font-size: 42px; margin-top: 0;">
         El Enigma Está Resuelto
         </h2>
-        
-        <div style="font-size: 26px; line-height: 1.8; margin-top: 30px;">
-        <strong style="font-size: 32px;">Tres culpables. Tres soluciones.</strong><br><br>
-        
-        ⏰ <strong>Tiempo:</strong> Depósitos escalonados según anticipación<br>
-        📱 <strong>OTAs:</strong> Rescata tu canal directo con incentivos<br>
-        💰 <strong>Políticas:</strong> Dinero en juego = Compromiso real<br><br>
-        
-        <div style="text-align: center; font-size: 32px; margin-top: 40px; 
-             background: rgba(255,255,255,0.2); padding: 30px; border-radius: 15px;">
-        119.390 reservas nos contaron su historia.<br>
-        <strong>Ahora depende de ti escribir el siguiente capítulo.</strong>
-        </div>
-        </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown("")
+    
+    col1, col2, col3 = st.columns([1, 3, 1])
+    with col2:
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+             padding: 40px; border-radius: 15px; color: white; margin-top: -30px;">
+            <p style="font-size: 32px; font-weight: bold; margin: 0; padding: 0;">Tres culpables. Tres soluciones.</p>
+            <br>
+            <p style="font-size: 26px; margin: 15px 0;">⏰ <strong>Tiempo:</strong> Depósitos escalonados según anticipación</p>
+            <p style="font-size: 26px; margin: 15px 0;">📱 <strong>OTAs:</strong> Rescata tu canal directo con incentivos</p>
+            <p style="font-size: 26px; margin: 15px 0;">💰 <strong>Políticas:</strong> Dinero en juego = Compromiso real</p>
+            <br>
+            <div style="text-align: center; font-size: 32px; margin-top: 40px; 
+                 background: rgba(255,255,255,0.2); padding: 30px; border-radius: 15px;">
+                <p style="margin: 0;">119.390 reservas nos contaron su historia.</p>
+                <p style="margin: 20px 0 0 0;"><strong>Ahora depende de ti escribir el siguiente capítulo.</strong></p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
