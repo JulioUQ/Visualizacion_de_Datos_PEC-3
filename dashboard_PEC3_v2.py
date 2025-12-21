@@ -910,8 +910,8 @@ with tab5:
     # Mensaje final
     st.markdown("""
     <div style="text-align: center; font-size: 28px; color: #333; margin: 50px 0;">
-    ¿37% de cancelaciones?<br>
-    <strong style="font-size: 36px; color: #28a745;">No tiene por qué ser tu realidad.</strong>
+        ¿37% de cancelaciones?<br>
+        <strong style="font-size: 36px; color: #28a745;">No tiene por qué ser tu realidad.</strong>
     </div>
     """, unsafe_allow_html=True)
 
@@ -923,5 +923,6 @@ st.markdown("""
 <div style="text-align: center; color: #888; padding: 20px;">
     <p style="font-size: 16px;"><strong>Dashboard Storytelling - PEC 3 Visualización de Datos</strong></p>
     <p style="font-size: 14px;">Máster en Ciencia de Datos | UOC | 2025</p>
+    <p style="font-size: 14px;">Julio Úbeda Quesada</p>
 </div>
 """, unsafe_allow_html=True)
