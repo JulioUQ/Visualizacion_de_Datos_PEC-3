@@ -262,7 +262,7 @@ with tab1:
         </p>
         <br>
         <p style="margin: 10px 0; font-size: 24px;">
-        119.390 reservas reales. 3 años completos. Dos hoteles portugueses.
+        119.390 reservas reales. 3 años casi completos. Dos hoteles portugueses.
         </p>
         <p style="margin: 10px 0; font-size: 24px;">
         Y descubrí algo que cambiará cómo ves las cancelaciones.
