@@ -868,38 +868,39 @@ with tab5:
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
     
-    # CIERRE PODEROSO
+    # CIERRE PODEROSO - Todo en un solo bloque centrado
     st.markdown("""
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-         padding: 50px; border-radius: 20px; color: white;">
-        <h2 style="color: white; text-align: center; font-size: 42px; margin-top: 0;">
-        El Enigma Está Resuelto
-        </h2>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("")
-    
-    col1, col2, col3 = st.columns([1, 3, 1])
-    with col2:
-        st.markdown("""
+    <div style="max-width: 1200px; margin: 0 auto;">
         <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-             padding: 40px; border-radius: 15px; color: white; margin-top: -30px;">
-            <p style="font-size: 32px; font-weight: bold; margin: 0; padding: 0;">Tres culpables. Tres soluciones.</p>
-            <br>
-            <p style="font-size: 26px; margin: 15px 0;">⏰ <strong>Tiempo:</strong> Depósitos escalonados según anticipación</p>
-            <p style="font-size: 26px; margin: 15px 0;">📱 <strong>OTAs:</strong> Rescata tu canal directo con incentivos</p>
-            <p style="font-size: 26px; margin: 15px 0;">💰 <strong>Políticas:</strong> Dinero en juego = Compromiso real</p>
-            <br>
-            <div style="text-align: center; font-size: 32px; margin-top: 40px; 
-                 background: rgba(255,255,255,0.2); padding: 30px; border-radius: 15px;">
-                <p style="margin: 0;">119.390 reservas nos contaron su historia.</p>
-                <p style="margin: 20px 0 0 0;"><strong>Ahora depende de ti escribir el siguiente capítulo.</strong></p>
+             padding: 50px 60px; border-radius: 20px; color: white; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+            <h2 style="color: white; text-align: center; font-size: 42px; margin: 0 0 40px 0;">
+                El Enigma Está Resuelto
+            </h2>
+            
+            <p style="font-size: 32px; font-weight: bold; margin: 0 0 30px 0; text-align: center;">
+                Tres culpables. Tres soluciones.
+            </p>
+            
+            <p style="font-size: 26px; margin: 20px 0; line-height: 1.6;">
+                ⏰ <strong>Tiempo:</strong> Depósitos escalonados según anticipación
+            </p>
+            <p style="font-size: 26px; margin: 20px 0; line-height: 1.6;">
+                📱 <strong>OTAs:</strong> Rescata tu canal directo con incentivos
+            </p>
+            <p style="font-size: 26px; margin: 20px 0; line-height: 1.6;">
+                💰 <strong>Políticas:</strong> Dinero en juego = Compromiso real
+            </p>
+            
+            <div style="text-align: center; font-size: 32px; margin-top: 50px; 
+                 background: rgba(255,255,255,0.2); padding: 35px; border-radius: 15px;">
+                <p style="margin: 0 0 20px 0;">119.390 reservas nos contaron su historia.</p>
+                <p style="margin: 0; font-weight: bold;">Ahora depende de ti escribir el siguiente capítulo.</p>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown("<br>", unsafe_allow_html=True)
     
