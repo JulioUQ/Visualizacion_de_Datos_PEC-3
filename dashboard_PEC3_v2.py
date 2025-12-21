@@ -432,20 +432,17 @@ with tab3:
         st.markdown("""
         <div class="culprit-box">
             <div class="culprit-title">18% vs 56%</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="culprit-box" style="margin-top: -20px; padding-top: 20px;">
-            <div class="culprit-text">
-            <p style="margin: 10px 0;">Si un cliente reserva con <strong>menos de 7 días</strong> de anticipación: 
-            solo el <strong>18% cancela</strong>. Tiene prisa, tiene compromiso.</p>
-            
-            <p style="margin: 10px 0;">Pero si reserva con <strong>más de 6 meses</strong>: <strong>56% de cancelaciones</strong>. 
-            Más de la mitad.</p>
-            
-            <p style="margin: 10px 0;">¿Por qué? Porque el tiempo diluye el compromiso.</p>
-            </div>
+            <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+            Si un cliente reserva con <strong>menos de 7 días</strong> de anticipación: 
+            solo el <strong>18% cancela</strong>. Tiene prisa, tiene compromiso.
+            </p>
+            <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+            Pero si reserva con <strong>más de 6 meses</strong>: <strong>56% de cancelaciones</strong>. 
+            Más de la mitad.
+            </p>
+            <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+            ¿Por qué? Porque el tiempo diluye el compromiso.
+            </p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -649,19 +646,21 @@ with tab4:
     st.markdown("""
     <div class="culprit-box">
         <div class="culprit-title">15% vs 43%</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="culprit-box" style="margin-top: -20px; padding-top: 20px;">
-        <div class="culprit-text">
-        <p style="margin: 10px 0;">Reservas <strong>con depósito</strong>: 15% de cancelaciones.</p>
-        <p style="margin: 10px 0;">Reservas <strong>sin depósito</strong>: 43% de cancelaciones.</p>
-        <br>
-        <p style="margin: 10px 0;">No hace falta un doctorado en psicología:</p>
-        <p style="margin: 10px 0;"><strong>Dinero en juego = Compromiso</strong></p>
-        <p style="margin: 10px 0;">Sin dinero en juego = 'Ya veré si voy'</p>
-        </div>
+        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+        Reservas <strong>con depósito</strong>: 15% de cancelaciones.
+        </p>
+        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+        Reservas <strong>sin depósito</strong>: 43% de cancelaciones.
+        </p>
+        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+        No hace falta un doctorado en psicología:
+        </p>
+        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+        <strong>Dinero en juego = Compromiso</strong>
+        </p>
+        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
+        Sin dinero en juego = 'Ya veré si voy'
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -680,18 +679,18 @@ with tab5:
         st.markdown("""
         <div class="solution-box">
             <div class="solution-title">PASO 1: Depósitos Escalonados</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="solution-box" style="margin-top: -20px; padding-top: 20px;">
-            <div class="solution-text">
-            <p style="margin: 8px 0;"><strong>&lt; 30 días:</strong> 0% depósito</p>
-            <p style="margin: 8px 0;"><strong>30-90 días:</strong> 10% depósito</p>
-            <p style="margin: 8px 0;"><strong>&gt; 90 días:</strong> 20% depósito</p>
-            <br>
-            <p style="margin: 8px 0;"><em>Suficiente para pensárselo dos veces.</em></p>
-            </div>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            <strong>&lt; 30 días:</strong> 0% depósito
+            </p>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            <strong>30-90 días:</strong> 10% depósito
+            </p>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            <strong>&gt; 90 días:</strong> 20% depósito
+            </p>
+            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-style: italic;">
+            Suficiente para pensárselo dos veces.
+            </p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -699,18 +698,18 @@ with tab5:
         st.markdown("""
         <div class="solution-box">
             <div class="solution-title">PASO 2: Rescata tu Canal Directo</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="solution-box" style="margin-top: -20px; padding-top: 20px;">
-            <div class="solution-text">
-            <p style="margin: 8px 0;">• 7% descuento directo</p>
-            <p style="margin: 8px 0;">• Programa de puntos</p>
-            <p style="margin: 8px 0;">• Upgrades gratis</p>
-            <br>
-            <p style="margin: 8px 0;"><em>Meta: del 18% al 35% en un año</em></p>
-            </div>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            • 7% descuento directo
+            </p>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            • Programa de puntos
+            </p>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            • Upgrades gratis
+            </p>
+            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-style: italic;">
+            Meta: del 18% al 35% en un año
+            </p>
         </div>
         """, unsafe_allow_html=True)
     
@@ -718,18 +717,18 @@ with tab5:
         st.markdown("""
         <div class="solution-box">
             <div class="solution-title">PASO 3: Convierte Desconocidos en Familia</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="solution-box" style="margin-top: -20px; padding-top: 20px;">
-            <div class="solution-text">
-            <p style="margin: 8px 0;">• Email 48h post-reserva</p>
-            <p style="margin: 8px 0;">• Tips locales 7 días antes</p>
-            <p style="margin: 8px 0;">• Follow-up post-estancia</p>
-            <br>
-            <p style="margin: 8px 0;"><em>Meta: triplicar el 3% actual</em></p>
-            </div>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            • Email 48h post-reserva
+            </p>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            • Tips locales 7 días antes
+            </p>
+            <p style="font-size: 20px; line-height: 1.6; margin: 15px 0;">
+            • Follow-up post-estancia
+            </p>
+            <p style="font-size: 18px; line-height: 1.6; margin: 20px 0; font-style: italic;">
+            Meta: triplicar el 3% actual
+            </p>
         </div>
         """, unsafe_allow_html=True)
     
