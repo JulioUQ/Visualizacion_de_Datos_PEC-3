@@ -170,7 +170,7 @@ Esta visualización explora **119,390 reservas hoteleras** realizadas entre 20
 > 
 > - Descuento del 7% por reservar en tu web.
 > - Programa de puntos solo para directos.
-> - Upgrades gratis para quien repite. Meta: del 18% actual al 35% en un año.
+> - Upgrades gratis para quien repite. Meta: del 14% actual al 35% en un año.
 > 
 > **Paso 3: Convierte desconocidos en familia.**
 > 
@@ -192,7 +192,7 @@ Esta visualización explora **119,390 reservas hoteleras** realizadas entre 20
 > 
 > Si reduces cancelaciones solo un **10%** —de 37% a 27%—, estás salvando... [pausa mientras aparecen números]
 > 
-> **11.939 reservas**. Con un promedio de 2.5 noches y 101 euros por noche... son **3 millones de euros recuperados**.
+> **11.739 reservas**. Con un promedio de 2.5 noches y 103.5 euros por noche... son **3 millones de euros recuperados**.
 > 
 > [Dejar que el número resuene]
 > 
