@@ -486,7 +486,7 @@ with tab3:
     <p style="font-size: 28px; font-weight: bold; margin: 0 0 15px 0;">El insight de oro:</p>
     <p style="font-size: 24px; margin: 0;">
     La mayoría de reservas se concentran entre <strong>1 y 3 meses</strong>. 
-    Esta es tu <strong>zona de batalla</strong>. No son los extremos, es el centro donde se juega el partido.
+    Esta es nuestra <strong>zona de batalla</strong>. No son los extremos, es el centro donde se juega el partido.
     </p>
     </div>
     """, unsafe_allow_html=True)
