@@ -645,21 +645,12 @@ with tab4:
     
     st.markdown("""
     <div class="culprit-box">
-        <div class="culprit-title">15% vs 43%</div>
+        <div class="culprit-title">¿Qué se observa?</div>
         <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
-        Reservas <strong>con depósito</strong>: 15% de cancelaciones.
+        Las reservas <strong>sin depósito</strong> presentan tasas de cancelación elevadas, cercanas al 30 %.
         </p>
         <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
-        Reservas <strong>sin depósito</strong>: 43% de cancelaciones.
-        </p>
-        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
-        No hace falta un doctorado en psicología:
-        </p>
-        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
-        <strong>Dinero en juego = Compromiso</strong>
-        </p>
-        <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
-        Sin dinero en juego = 'Ya veré si voy'
+        Pero el resultado más llamativo aparece en las tarifas <strong>no reembolsables</strong>, donde la cancelación es casi total.
         </p>
     </div>
     """, unsafe_allow_html=True)
