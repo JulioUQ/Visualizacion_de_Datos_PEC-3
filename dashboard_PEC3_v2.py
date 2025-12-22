@@ -431,13 +431,13 @@ with tab3:
     with col1:
         st.markdown("""
         <div class="culprit-box">
-            <div class="culprit-title">18% vs 56%</div>
+            <div class="culprit-title">6.7% vs 57.2%</div>
             <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
             Si un cliente reserva con <strong>menos de 7 días</strong> de anticipación: 
-            solo el <strong>18% cancela</strong>. Tiene prisa, tiene compromiso.
+            solo el <strong>6.7% cancela</strong>. Tiene prisa, tiene compromiso.
             </p>
             <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
-            Pero si reserva con <strong>más de 6 meses</strong>: <strong>56% de cancelaciones</strong>. 
+            Pero si reserva con <strong>más de 6 meses</strong>: <strong>57.2% de cancelaciones</strong>. 
             Más de la mitad.
             </p>
             <p style="font-size: 22px; line-height: 1.6; margin: 20px 0;">
